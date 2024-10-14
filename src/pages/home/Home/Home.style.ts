@@ -7,7 +7,7 @@ export const mainLayout = css`
   gap: 3rem;
   width: 100%;
   height: 100dvh;
-  padding: 3rem 7rem;
+  padding: 11rem 7rem 3rem;
 `;
 
 export const chattingSection = css`

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Chat } from "@types";
-// import postSendToFlask from "@apis/postSendToFlask";
+import postSendToFlask from "@apis/postSendToFlask";
 
 const useChat = () => {
   const [chatHistory, setChatHistory] = useState<Chat[]>([]);
@@ -10,7 +10,9 @@ const useChat = () => {
 
   const chatListRef = useRef<HTMLUListElement>(null);
 
-  const handleSubmitForm = (event: React.ChangeEvent<HTMLFormElement>) => {
+  const handleSubmitForm = async (
+    event: React.ChangeEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
     if (isTyping) {
       return;
@@ -20,16 +22,11 @@ const useChat = () => {
       return;
     }
 
-    // const fullAnswer = postSendToFlask(question);
-    const fullAnswer = `컴퓨터네트워크에 대해서 알려줘컴퓨터네트워크에 대해서
-              알려줘컴퓨터네트워크에 대해서 알려줘컴퓨터네트워크에 대해서
-              알려줘컴퓨터네트워크에 대해서 알려줘컴퓨터네트워크에 대해서
-              알려줘컴퓨터네트워크에 대해서 알려줘컴퓨터네트워크에 대해서
-              알려줘컴퓨터네트워크에 대해서 알려줘컴퓨터네트워크에 대해서
-              알려줘컴퓨터네트워크에 대해서 알려줘컴퓨터네트워크에 대해서 알려줘`;
+    const response = await postSendToFlask(question);
+    const fullAnswer = response?.data?.outputVal || "";
 
     setIsTyping(true);
-    setTypedAnswer(" "); // 새 답변을 입력하기 전에 초기화
+    setTypedAnswer(""); // 새 답변을 입력하기 전에 초기화
     typeAnswer(fullAnswer);
     setChatHistory([...chatHistory, { question, answer: "" }]); // 빈 답변으로 추가
     setQuestion("");

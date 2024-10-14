@@ -62,7 +62,7 @@ const useChat = () => {
     if (chatListRef.current) {
       chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
     }
-  }, [chatHistory, typedAnswer]);
+  }, [chatHistory, typedAnswer, isPending]);
 
   return {
     chatHistory,

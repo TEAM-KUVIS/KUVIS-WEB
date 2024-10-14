@@ -7,7 +7,7 @@ import {
 } from "./Home.style";
 import { Chats } from "../components";
 import { useChat } from "../hooks";
-import { DotLoader } from "react-spinners";
+import { SyncLoader } from "react-spinners";
 import { Header } from "@components";
 
 const Home = () => {
@@ -33,7 +33,7 @@ const Home = () => {
             isTyping={isTyping}
           />
         </ul>
-        {isPending && <DotLoader color="#AAB396" />}
+        {isPending && <SyncLoader color="#112D4E" />}
 
         <form css={formContainer} onSubmit={handleSubmitForm}>
           <input

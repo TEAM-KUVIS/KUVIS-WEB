@@ -4,10 +4,10 @@ import { flexGenerator, fontGenerator } from "@styles/generator";
 
 export const mainLayout = css`
   ${flexGenerator("column", "flex-end", "center")}
-  gap: 3rem;
+  gap: 2rem;
   width: 100%;
   height: 100dvh;
-  padding: 11rem 7rem 3rem;
+  padding: 8rem 7rem 2rem;
 `;
 
 export const chattingSection = css`

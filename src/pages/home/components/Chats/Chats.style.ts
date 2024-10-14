@@ -11,7 +11,7 @@ export const chatContainer = css`
 export const questionContainer = (theme: Theme) => css`
   max-width: 50%;
   ${flexGenerator("row", "flex-end", "center")};
-  background-color: ${theme.color.primary04};
+  background-color: ${theme.color.primary03};
   padding: 1rem;
   border-radius: 1rem;
 `;
@@ -20,8 +20,6 @@ export const questionText = css`
   ${fontGenerator("1.6rem", "400", "140%")};
   width: 100%;
 `;
-
-// ----------------------------------------
 
 export const answerContainer = css`
   width: 100%;

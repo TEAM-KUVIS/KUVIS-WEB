@@ -7,6 +7,7 @@ import {
 } from "./Home.style";
 import { Chats } from "../components";
 import { useChat } from "../hooks";
+import { DotLoader } from "react-spinners";
 
 const Home = () => {
   const {
@@ -15,6 +16,7 @@ const Home = () => {
     typedAnswer,
     isTyping,
     chatListRef,
+    isPending,
     handleSubmitForm,
     handleChangeInput,
   } = useChat();
@@ -28,13 +30,15 @@ const Home = () => {
           isTyping={isTyping}
         />
       </ul>
+      {isPending && <DotLoader color="#AAB396" />}
+
       <form css={formContainer} onSubmit={handleSubmitForm}>
         <input
           css={formInput}
           type="text"
           value={question}
           onChange={handleChangeInput}
-          disabled={isTyping}
+          disabled={isPending}
           placeholder="질문을 입력하세요."
         />
         <button css={formButton} type="submit">

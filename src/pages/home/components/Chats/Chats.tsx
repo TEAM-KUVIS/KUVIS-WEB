@@ -6,6 +6,8 @@ import {
   questionContainer,
   questionText,
 } from "./Chats.style";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface ChatsProps {
   chats: Chat[];
@@ -23,12 +25,15 @@ const Chats = ({ chats, typedAnswer, isTyping }: ChatsProps) => {
               <p css={questionText}>{chat.question}</p>
             </article>
             <article css={answerContainer}>
-              <p css={answerText}>
-                {" "}
-                {index === chats.length - 1 && isTyping
-                  ? typedAnswer
-                  : chat.answer}
-              </p>
+              <ReactMarkdown
+                children={
+                  index === chats.length - 1 && isTyping
+                    ? typedAnswer
+                    : chat.answer
+                }
+                remarkPlugins={[remarkGfm]}
+                css={answerText}
+              ></ReactMarkdown>
             </article>
           </li>
         );

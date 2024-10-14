@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Chat } from "@types";
-import postSendToFlask from "@apis/postSendToFlask";
+import { usePostSendToFlask } from "@apis/chat/usePostSendToFlask";
 
 const useChat = () => {
   const [chatHistory, setChatHistory] = useState<Chat[]>([]);
@@ -9,6 +9,8 @@ const useChat = () => {
   const [isTyping, setIsTyping] = useState(false); // 타이핑 중인지 여부
 
   const chatListRef = useRef<HTMLUListElement>(null);
+
+  const { mutateAsync, isPending } = usePostSendToFlask();
 
   const handleSubmitForm = async (
     event: React.ChangeEvent<HTMLFormElement>
@@ -22,14 +24,15 @@ const useChat = () => {
       return;
     }
 
-    const response = await postSendToFlask(question);
-    const fullAnswer = response?.data?.outputVal || "";
+    mutateAsync(question).then((data) => {
+      const fullAnswer = data?.data.outputVal || "";
 
-    setIsTyping(true);
-    setTypedAnswer(""); // 새 답변을 입력하기 전에 초기화
-    typeAnswer(fullAnswer);
-    setChatHistory([...chatHistory, { question, answer: "" }]); // 빈 답변으로 추가
-    setQuestion("");
+      setIsTyping(true);
+      setTypedAnswer(""); // 새 답변을 입력하기 전에 초기화
+      typeAnswer(fullAnswer);
+      setChatHistory([...chatHistory, { question, answer: "" }]); // 빈 답변으로 추가
+      setQuestion("");
+    });
   };
 
   const typeAnswer = (fullAnswer: string) => {
@@ -67,6 +70,7 @@ const useChat = () => {
     typedAnswer,
     isTyping,
     chatListRef,
+    isPending,
     handleSubmitForm,
     handleChangeInput,
   };

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Modal from "../Modal/Modal";
 import {
   fileInput,
   header,
@@ -10,6 +9,7 @@ import {
 } from "./Header.style";
 import { fetchPresignedUrl } from "@apis/file/useFetchPresignedUrl";
 import { usePutS3Upload } from "@apis/file/usePutS3Upload";
+import { Modal } from "@components";
 
 const Header = () => {
   const [chatName, setChatName] = useState("");

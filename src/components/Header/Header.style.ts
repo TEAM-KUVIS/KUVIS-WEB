@@ -21,3 +21,4 @@ export const header = (theme: Theme) => css`
 export const headerTitle = css`
   ${fontGenerator("2.4rem", "700")};
 `;
+

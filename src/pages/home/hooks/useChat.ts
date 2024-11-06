@@ -1,37 +1,56 @@
 import { useEffect, useRef, useState } from "react";
 import { Chat } from "@types";
-import { usePostSendToFlask } from "@apis/chat/usePostSendToFlask";
+import { usePostQuery } from "@apis/chat/usePostQuery";
+import { useFetchHistory } from "@apis/chat/useFetchHistory";
+import { useQueryClient } from "@tanstack/react-query";
 
 const useChat = () => {
   const [chatHistory, setChatHistory] = useState<Chat[]>([]);
-  const [question, setQuestion] = useState("");
+  const [query, setQuery] = useState("");
   const [typedAnswer, setTypedAnswer] = useState(""); // 타이핑 중인 답변 상태
   const [isTyping, setIsTyping] = useState(false); // 타이핑 중인지 여부
 
   const chatListRef = useRef<HTMLUListElement>(null);
+  const [selectedChatId, setSelectedChatId] = useState<number>();
+  const queryClient = useQueryClient();
 
-  const { mutateAsync, isPending } = usePostSendToFlask();
+  const handleClickChat = (id: number) => {
+    if (selectedChatId === id) {
+      return;
+    }
+    setSelectedChatId(id);
+    queryClient.invalidateQueries({ queryKey: ["chatHistory", id] });
+  };
+
+  const { mutateAsync, isPending } = usePostQuery();
+  const { data: chatSavedHistory } = useFetchHistory(selectedChatId ?? 0);
+
+  useEffect(() => {
+    if (chatSavedHistory) {
+      setChatHistory(chatSavedHistory);
+    }
+  }, [chatSavedHistory]);
 
   const handleSubmitForm = async (
     event: React.ChangeEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
-    if (isTyping) {
+    if (isTyping || isPending) {
       return;
     }
 
-    if (!question.trim().replace(/[\s\n\t]+/g, "").length) {
+    if (!query.trim().replace(/[\s\n\t]+/g, "").length || !selectedChatId) {
       return;
     }
 
-    mutateAsync(question).then((data) => {
+    mutateAsync({ pdfId: selectedChatId, query: query }).then((data) => {
       const fullAnswer = data?.data.outputVal || "";
 
       setIsTyping(true);
       setTypedAnswer(""); // 새 답변을 입력하기 전에 초기화
       typeAnswer(fullAnswer);
-      setChatHistory([...chatHistory, { question, answer: "" }]); // 빈 답변으로 추가
-      setQuestion("");
+      setChatHistory([...chatHistory, { query, answer: "" }]); // 빈 답변으로 추가
+      setQuery("");
     });
   };
 
@@ -55,7 +74,7 @@ const useChat = () => {
   };
 
   const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuestion(event.target.value);
+    setQuery(event.target.value);
   };
 
   useEffect(() => {
@@ -66,13 +85,16 @@ const useChat = () => {
 
   return {
     chatHistory,
-    question,
+    query,
     typedAnswer,
     isTyping,
     chatListRef,
     isPending,
     handleSubmitForm,
     handleChangeInput,
+    selectedChatId,
+    setSelectedChatId,
+    handleClickChat,
   };
 };
 

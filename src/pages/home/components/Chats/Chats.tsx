@@ -22,7 +22,7 @@ const Chats = ({ chats, typedAnswer, isTyping }: ChatsProps) => {
         return (
           <li css={chatContainer} key={index}>
             <article css={questionContainer}>
-              <p css={questionText}>{chat.question}</p>
+              <p css={questionText}>{chat.query}</p>
             </article>
             <article css={answerContainer}>
               <ReactMarkdown

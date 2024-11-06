@@ -9,3 +9,13 @@ export interface AnswerResponseType {
     outputVal: string;
   };
 }
+
+export interface StoreResponseType {
+  name: string;
+  filename: string;
+}
+
+export interface PdfsResponseType {
+  id: number;
+  name: string;
+}

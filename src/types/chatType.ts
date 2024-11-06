@@ -1,4 +1,4 @@
 export interface Chat {
-  question: string;
+  query: string;
   answer: string;
 }

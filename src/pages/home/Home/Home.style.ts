@@ -2,12 +2,16 @@ import { css, Theme } from "@emotion/react";
 
 import { flexGenerator, fontGenerator } from "@styles/generator";
 
+export const mainWrapper = css`
+  ${flexGenerator("row", "flex-start", "flex-start")};
+`;
+
 export const mainLayout = css`
   ${flexGenerator("column", "flex-end", "center")}
   gap: 2rem;
-  width: 100%;
+  flex: 1;
   height: 100dvh;
-  padding: 8rem 7rem 2rem;
+  padding: 8rem 10rem 2rem;
 `;
 
 export const chattingSection = css`
@@ -16,6 +20,10 @@ export const chattingSection = css`
   width: 100%;
   height: auto;
   overflow-y: auto;
+`;
+
+export const homeSpinner = css`
+  margin-bottom: 1rem;
 `;
 
 export const formContainer = (theme: Theme) => css`
@@ -47,6 +55,10 @@ export const formInput = (theme: Theme) => css`
   &:focus ~ button {
     background-color: ${theme.color.primary01};
     color: ${theme.color.white};
+  }
+
+  &:disabled {
+    background-color: ${theme.color.lightgray2};
   }
 `;
 

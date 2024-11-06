@@ -2,12 +2,14 @@ import { useMutation } from "@tanstack/react-query";
 import { AnswerResponseType } from "@types";
 import { post } from "..";
 
-const postSendToFlask = async (
+const postQuery = async (
+  pdfId: number,
   query: string
 ): Promise<AnswerResponseType | null> => {
   try {
-    const response: AnswerResponseType = await post("/sendToFlask", {
-      inputVal: query,
+    const response: AnswerResponseType = await post("/query", {
+      pdfId,
+      query,
     });
     return response;
   } catch (error) {
@@ -16,8 +18,9 @@ const postSendToFlask = async (
   }
 };
 
-export const usePostSendToFlask = () => {
+export const usePostQuery = () => {
   return useMutation({
-    mutationFn: (query: string) => postSendToFlask(query),
+    mutationFn: ({ pdfId, query }: { pdfId: number; query: string }) =>
+      postQuery(pdfId, query),
   });
 };

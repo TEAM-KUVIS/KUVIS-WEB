@@ -22,6 +22,10 @@ export const chattingSection = css`
   overflow-y: auto;
 `;
 
+export const homeSpinner = css`
+  margin-bottom: 1rem;
+`;
+
 export const formContainer = (theme: Theme) => css`
   width: 100%;
   min-height: 5rem;
@@ -51,6 +55,10 @@ export const formInput = (theme: Theme) => css`
   &:focus ~ button {
     background-color: ${theme.color.primary01};
     color: ${theme.color.white};
+  }
+
+  &:disabled {
+    background-color: ${theme.color.lightgray2};
   }
 `;
 

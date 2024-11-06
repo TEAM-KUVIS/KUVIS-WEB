@@ -3,6 +3,7 @@ import {
   formButton,
   formContainer,
   formInput,
+  homeSpinner,
   mainLayout,
   mainWrapper,
 } from "./Home.style";
@@ -11,32 +12,28 @@ import { useChat } from "../hooks";
 import { SyncLoader } from "react-spinners";
 import { Header, Sidebar } from "@components";
 
-const mockData = [
-  { name: "컴퓨터 네트워크 컴퓨터 네트워크 컴퓨터 네트워크", selected: false },
-  { name: "데이터베이스", selected: true },
-  { name: "프로그래밍 언어", selected: false },
-  { name: "자료구조", selected: false },
-  { name: "운영체제", selected: false },
-  { name: "컴퓨터 구조", selected: false },
-];
-
 const Home = () => {
   const {
     chatHistory,
-    question,
+    query,
     typedAnswer,
     isTyping,
     chatListRef,
     isPending,
     handleSubmitForm,
     handleChangeInput,
+    selectedChatId,
+    handleClickChat,
   } = useChat();
 
   return (
     <>
       <Header />
       <div css={mainWrapper}>
-        <Sidebar menuList={mockData} />
+        <Sidebar
+          selectedChatId={selectedChatId}
+          handleClickChat={handleClickChat}
+        />
         <main css={mainLayout}>
           <ul css={chattingSection} ref={chatListRef}>
             <Chats
@@ -45,13 +42,17 @@ const Home = () => {
               isTyping={isTyping}
             />
           </ul>
-          {isPending && <SyncLoader color="#112D4E" />}
+          {isPending && (
+            <span css={homeSpinner}>
+              <SyncLoader color="#112D4E" />
+            </span>
+          )}
 
           <form css={formContainer} onSubmit={handleSubmitForm}>
             <input
               css={formInput}
               type="text"
-              value={question}
+              value={query}
               onChange={handleChangeInput}
               disabled={isPending}
               placeholder="질문을 입력하세요."

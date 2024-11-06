@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { AnswerResponseType } from "@types";
-import { instance } from "..";
+import { post } from "..";
 
 const postSendToFlask = async (
   query: string
 ): Promise<AnswerResponseType | null> => {
   try {
-    const response: AnswerResponseType = await instance.post("/sendToFlask", {
+    const response: AnswerResponseType = await post("/sendToFlask", {
       inputVal: query,
     });
     return response;

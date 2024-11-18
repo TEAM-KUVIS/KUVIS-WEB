@@ -59,7 +59,7 @@ const Sidebar = ({ selectedChatId, handleClickChat }: SidebarProps) => {
   };
 
   useEffect(() => {
-    if (menuList && !selectedChatId) {
+    if (menuList && menuList.length > 0 && !selectedChatId) {
       handleClickChat(menuList[menuList.length - 1].id);
       menuList.reverse();
     }
